@@ -1,4 +1,4 @@
-package com.springboot.app.hospitalapp.patientManagementSystem;
+package com.springboot.app.hospitalapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
