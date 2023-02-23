@@ -1,0 +1,148 @@
+	<!DOCTYPE html>
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+ 	<title> Doctor Appointment History | Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+         >
+         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+
+
+<style>
+#appointment {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#appointment td, #appointment th {
+  border: 1px solid #ddd;
+  padding: 18px;
+}
+
+#appointment tr:nth-child(even){background-color: #f2f2f2;}
+#appointment tr:nth-child(odd){background-color: #CFCBCB;}
+#appointment tr:hover {background-color: #615B59;}
+
+#appointment th {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+  
+}
+</style>
+</head>
+
+<body>
+<!-- <nav class="navbar navbar-light"  style="background-color:#1ac6fb;"> -->
+
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color:#1ac6fb;">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Hospital Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                
+                    <a class="nav-link active"  aria-current="page" th:href="@{/doctor/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+
+</div>
+    
+</nav>
+ <a th:href="@{/doctor/dashboard}" class="previous">&laquo; Back</a>
+<br /><br />
+         
+<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+ <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+ <div class="alert alert-danger" role="alert" th:text="${patientError}" th:if="${patientError}"></div>
+	<body style="background-color:#E8F6F9;">
+			
+			<div class="container"  style="background-color:#B8DEE6;padding:20px; border: 3px solid #939FA1; border-inline-color: #BEBCBC;">
+				 <h2><b>Appointment History up to Today</b></h2>   
+			<hr/>
+			
+			 	Search By Patient full name or Appointment Time: 
+			 	<br/>
+			  <form style ='display:inline;' th:action="@{/doctor/appointmentHistory/}" method="get">
+				  <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by patient full name & appointment time" size="50" >
+				  <button type="submit" class="btn btn-info" >Search</button>
+				  </form>
+				   <form style ='display:inline;'  th:action="@{/doctor/appointmentHistory/}" method="get">
+				  <button type="submit" class="btn btn-info" >Reset</button>
+				   </form>
+				    	<br/>
+			   	Filter By Status: 
+			<form th:object = "${employee}"  th:action="@{/doctor/appointmentHistory/}" >
+         	
+         	<select name="status" id="cars">
+         	 <option value="-2">All</option>
+			  <option value="1">Accepted</option>
+			  <option value="0">Declined</option>
+			  <option value="-1">Not Reviewed</option>
+			
+			</select>
+		
+			  <button class="btn btn-primary" type = "submit">Filter</button>       	
+         	 </form>
+			    <div class="row">
+			        <div class="col-lg-10 mt-5 mb-5">
+			            <table id="appointment" class="table table-bordered" style="width: 100%">
+			                <thead>
+			                <tr>
+			                    <th>Appointment No.</th>
+			                    <th>Full Name</th>
+			                    <th>Appointment Time</th>
+			                  	<th>Status</th>
+			                </tr>
+			                </thead>
+			                <tbody>
+			                <tr th:each="patientDoctor : ${patientDoctorList}">
+			                    <td th:text="${patientDoctor.appointmentNo}"></td>
+			                    <td th:text="${patientDoctor.patient.fullName}"></td>
+			                    <td th:text="${patientDoctor.appointmentTime}"></td>
+			                        <!--  <td th:text="${patientDoctor.status}"></td> -->
+			                         
+			                    <td th:if="${patientDoctor.status == 0}" class="fa fa-close" th:text="${' Declined'}">  </td>
+							 	<td th:if="${patientDoctor.status == 1}" class="fa fa-check" th:text="${' Approved'}">  </td>    
+								<td th:if="${patientDoctor.status == -1}" class="fa fa-clock-o" th:text="${'  Not Reviewed'}">  </td> 
+			                </tr>
+			                </tbody>
+			            </table>
+			
+							<div class="pagination-div">
+					    <span th:if="${patientDoctorList.hasPrevious()}">
+					        <a th:href="@{/doctor/appointmentHistory(patientDoctorList=${patientDoctorList.number-1},size=${patientDoctorList.size})}">Previous</a>
+					    </span>
+					    <th:block th:each="i: ${#numbers.sequence(0, patientDoctorList.totalPages - 1)}">
+					        <span th:if="${patientDoctorList.number == i}" class="selected">[[${i}+1]]</span>
+					        <span th:unless="${patientDoctorList.number == i}">
+					             <a th:href="@{/doctor/appointmentHistory(page=${i},size=${patientDoctorList.size})}">[[${i}+1]]</a>
+					        </span>
+					    </th:block>
+					    <span th:if="${patientDoctorList.hasNext()}">
+					        <a th:href="@{/doctor/appointmentHistory(patientDoctorList=${patientDoctorList.number+1},size=${patientDoctorList.size})}">Next</a>
+					    </span>
+					</div>
+	
+			        </div>
+			    </div>
+			</div>
+
+  
+      
+
+	</body>
+
+</html>

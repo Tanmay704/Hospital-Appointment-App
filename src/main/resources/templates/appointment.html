@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+       <title>Book Appointment | Hospital Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+         >   
+         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- <nav class="navbar navbar-light"  style="background-color:#1ac6fb;"> -->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color:#1ac6fb;">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Hospital Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active"  aria-current="page" th:href="@{/patient/login}">Logout</a>
+                </li>
+            </ul>
+        </div>
+  
+</div>
+    </div>
+</nav>
+
+<br /><br />
+  		<div class="alert alert-danger" role="alert" th:text="${declinedSize}" th:if="${declinedSize}"></div>  
+ 	<div class="alert alert-danger" role="alert" th:text="${declinedType}" th:if="${declinedType}"></div>    
+		
+			<body style="background-color:#E8F6F9;">
+			<div class="container" style="background-color:#B8DEE6;padding:20px; border: 3px solid #939FA1; border-inline-color: #BEBCBC;">
+		  <div class="row col-md-8 offset-md-2">
+		    <div class="card">
+			      <div class="card-header">
+			          <h1 class="text-center">Book Appointment</h1>
+			      </div>
+			        <div class="card-header">
+			        <div class="row">
+					    <div class="col">
+					     <h3>Patient Name : <small><span th:text="${patient.fullName}"></span></small></h3>
+					    </div>
+					    <div class="col">
+					      <h3 style="text-align: right;">Doctor Name : <small><span th:text="${doctor.username}"></span></small></h3>
+					    </div>
+					    </div>
+    
+		      </div>
+		   
+		   
+		      <div class="card-body">
+		          <form class="row g-3"
+		            method="POST"
+		            role="form"
+		            th:action="@{/patient/appointment/{id}(id=${doctor.dId})}"
+		         	 th:object="${patientDoctor}"
+		        enctype="multipart/form-data" >
+		        
+		        
+		          
+  					
+  					<div class="form-group mb-3">
+					  <label>Select Time 	: (Required)</label>
+					<div class="cs-form">
+					  <input type="datetime-local" th:field="*{appointmentTime}" value="2018-06-12T19:30"
+       min="20-12-2022T09:00" max="27-12-2022T00:00"  class="form-control" required/>
+					</div>
+						</div>    
+					 <div class="form-group">
+		             <label>Enter Symptoms 	: (Optional)</label>
+		             <div class="cs-form">
+		               <input type="text" th:field="*{symptoms}" class="form-control" style="height:120px; width:600px;"/>
+		             </div>
+		            </div>	
+		          <div class="form-group">
+		            <label>If you have any previous appointment documents, please upload them (Optional) </label>
+		          <label> <small>Only the following file types are permitted:.jpg,.zip,.txt,.png,.pdf. </small> </label>
+		            <div class="cs-form">
+			            <input
+	              class="form-control" name="file" type="file" id="file" accept=".jpg, .zip .txt .png, .pdf" multiple><br />
+	          <!--   <input th:onClick="reset()" class="btn btn-warning" "> -->
+            	</div> </div>
+		            <br/>
+		            
+		            <div class="form-group">
+		            
+		              <button class="btn btn-warning" value="Upload" type="submit" >Book</button>
+		              
+		              <span>Go back? <a th:href="@{/patient/bookAppointment}">click here</a></span>
+		            </div>
+		          </form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		
+		
+		
+		
+	</body>
+	
+	</html>

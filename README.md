@@ -1,4 +1,4 @@
-# Hospital-Appointment-App
+Hospital-Appointment-App
 
 "Hospital Appointment App" is a Java Spring Boot web application with MySQL database and Thymeleaf as the view engine. The application allows patients to schedule an appointment with a specific doctor and the doctors can view their appointment schedules from a separate login interface.
 
